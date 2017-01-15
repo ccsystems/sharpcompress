@@ -68,6 +68,7 @@ namespace SharpCompress.Writers.Tar
 
             TarHeader header = new TarHeader();
             header.LastModifiedTime = modificationTime ?? TarHeader.Epoch;
+            header.EntryType = EntryType.OldFile;
             header.Name = NormalizeFilename(filename);
             header.Size = realSize;
             header.Write(OutputStream);

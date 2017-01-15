@@ -31,7 +31,7 @@ namespace SharpCompress.Common.Tar.Headers
             WriteOctalBytes(0, buffer, 108, 8); // owner ID
             WriteOctalBytes(0, buffer, 116, 8); // group ID
 
-            //Encoding.UTF8.GetBytes("magic").CopyTo(buffer, 257);
+            Encoding.UTF8.GetBytes("ustar  ").CopyTo(buffer, 257);
             if (Name.Length > 100)
             {
                 // Set mock filename and filetype to indicate the next block is the actual name of the file
@@ -59,6 +59,7 @@ namespace SharpCompress.Common.Tar.Headers
 
             int crc = RecalculateChecksum(buffer);
             WriteOctalBytes(crc, buffer, 148, 8);
+            buffer[155] = 0x00;
 
             output.Write(buffer, 0, buffer.Length);
 
@@ -192,7 +193,7 @@ namespace SharpCompress.Common.Tar.Headers
             int shift = length - val.Length - 1;
             for (int i = 0; i < shift; i++)
             {
-                buffer[offset + i] = (byte)' ';
+                buffer[offset + i] = (byte)'0';
             }
             for (int i = 0; i < val.Length; i++)
             {
